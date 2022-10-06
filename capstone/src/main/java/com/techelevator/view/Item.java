@@ -28,6 +28,19 @@ public class Item {
     }
 
     public String getMessage() {
+        if(category.equals("Chip")){
+            message = "Crunch Crunch, Yum!";
+        }
+        else if (category.equals("Candy")){
+            message = "Munch Munch, Yum!";
+        }
+        else if (category.equals("Drink")){
+            message = "Glug Glug, Yum!";
+        }
+        else message = "Chew Chew, Yum!";
+
         return message;
     }
+
+
 }

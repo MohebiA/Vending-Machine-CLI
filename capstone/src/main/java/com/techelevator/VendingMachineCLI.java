@@ -107,9 +107,7 @@ public class VendingMachineCLI {
 			List<Item> currentItemList = currentStock.get(userSlot);
 			//Check if item in stock
 			if(currentItemList.size() > 1){
-				String currentItem = currentItemList.get(0).getName();
-				System.out.println("\nYou selected " + currentItem);
-				currentItemList.remove(0);
+				dispenseItem(userSlot);
 			}else{
 				System.out.println(userSlot + " is empty");
 			}
@@ -119,13 +117,17 @@ public class VendingMachineCLI {
 		}
 	}
 
-/*	public static void dispenseItem() {
+	public void dispenseItem(String userSlot) {
+		Item currentItem = currentStock.get(userSlot).remove(0);
+		System.out.println("You selected " + currentItem.getName() + ", " + currentItem.getPrice());
+		if(currentItem.getPrice() > balance){
+			System.out.println("Insufficient funds XXX");
+		}else {
+			balance -= currentItem.getPrice();
+			System.out.println("Current balance: " + balance + " \n" + currentItem.getMessage());
+		}
 
-
-
-
-
-	}*/
+	}
 
 	public static void finishTransaction() {
 
