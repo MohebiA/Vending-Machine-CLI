@@ -4,10 +4,8 @@ import com.techelevator.view.Inventory;
 import com.techelevator.view.Item;
 import com.techelevator.view.Menu;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.NumberFormat;
+import java.util.*;
 
 public class VendingMachineCLI {
 
@@ -19,6 +17,7 @@ public class VendingMachineCLI {
 	private static final String PURCHASE_MENU_OPTION_SELECT = "Select Product";
 	private static final String PURCHASE_MENU_OPTION_FINISH = "Finish Transaction";
 	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED, PURCHASE_MENU_OPTION_SELECT, PURCHASE_MENU_OPTION_FINISH};
+
 	private Map<String, List<Item>> currentStock = new TreeMap<>();
 	private static double balance = 0;
 
@@ -34,17 +33,27 @@ public class VendingMachineCLI {
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
-
 				displayItems(currentStock);
 
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
-
 				 choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
-				 if(choice.equals(PURCHASE_MENU_OPTION_FEED)){
-				 }
+				 if(choice.equals(PURCHASE_MENU_OPTION_FEED)) {
+					 System.out.print("Enter an amount to deposit: ");
 
+					 try {
+						 double depositAmount = Double.parseDouble(menu.getUserInput());
+						 feedMoney(depositAmount);
+					 } catch(NumberFormatException e) {
+						 System.out.println("Please enter a valid price: ");
+					 }
+
+				 } else if (choice.equals(PURCHASE_MENU_OPTION_SELECT)) {
+					 selectProduct();
+				 } else if (choice.equals(PURCHASE_MENU_OPTION_FINISH)) {
+					 finishTransaction();
+				 }
 
 			} else if(choice.equals(MAIN_MENU_OPTION_EXIT)){
 				System.exit(1);
@@ -64,13 +73,27 @@ public class VendingMachineCLI {
 
 	public void initializeInventory() {
 		currentStock = Inventory.loadInventory(currentStock);
-		// System.out.println(currentStock.get("A1").get(0).getName());
 	}
 
 	public static double feedMoney(double deposit){
-		balance = deposit + balance;
+		balance += deposit;
+
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		System.out.println("\nYou deposited: " + currency.format(deposit) + "\nBalance: " + currency.format(balance));
 
 		return balance;
+	}
+
+	public static void selectProduct() {
+
+	}
+
+	public static void dispenseItem() {
+
+	}
+
+	public static void finishTransaction() {
+
 	}
 
 	public static void displayItems(Map<String, List<Item>> inventory){

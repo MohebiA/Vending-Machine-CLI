@@ -50,4 +50,9 @@ public class Menu {
 		out.print(System.lineSeparator() + "Please choose an option >>> ");
 		out.flush();
 	}
+
+	// Added method to access user input in CLI
+	public String getUserInput() {
+		return in.nextLine();
+	}
 }
