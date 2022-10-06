@@ -14,6 +14,10 @@ public class VendingMachineCLI {
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE };
+	private static final String PURCHASE_MENU_OPTION_FEED = "Feed Money";
+	private static final String PURCHASE_MENU_OPTION_SELECT = "Select Product";
+	private static final String PURCHASE_MENU_OPTION_FINISH = "Finish Transaction";
+	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED, PURCHASE_MENU_OPTION_SELECT, PURCHASE_MENU_OPTION_FINISH};
 	private Map<String, List<Item>> currentStock = new TreeMap<>();
 
 	private Menu menu;
@@ -45,6 +49,9 @@ public class VendingMachineCLI {
 
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
+
+				 choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+
 			}
 		}
 	}
