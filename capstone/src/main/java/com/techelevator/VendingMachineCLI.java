@@ -30,27 +30,14 @@ public class VendingMachineCLI {
 
 	public void run() {
 		while (true) {
-			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
-			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
-				// display vending machine items
-				displayItems(currentStock);
-
-			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				// do purchase
-				 choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-
-				 if(choice.equals(PURCHASE_MENU_OPTION_FEED)) {
-					 feedMoney();
-
-				 } else if (choice.equals(PURCHASE_MENU_OPTION_SELECT)) {
-					 selectProduct();
-				 } else if (choice.equals(PURCHASE_MENU_OPTION_FINISH)) {
-					 finishTransaction();
-				 }
-
-			} else if(choice.equals(MAIN_MENU_OPTION_EXIT)){
-				System.exit(1);
+			if (currentMenu.equals(MAIN_MENU_OPTIONS)) {
+				String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
+				chooseFromMain(choice);
+			}
+			else if (currentMenu.equals(PURCHASE_MENU_OPTIONS)) {
+				String choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+				chooseFromPurchaseMenu(choice);
 			}
 		}
 	}
@@ -69,6 +56,32 @@ public class VendingMachineCLI {
 		currentStock = Inventory.loadInventory(currentStock);
 	}
 
+	public void chooseFromMain(String choice) {
+
+		if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
+			// display vending machine items
+			displayItems(currentStock);
+
+		} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
+			chooseFromPurchaseMenu(choice);
+
+		} else if(choice.equals(MAIN_MENU_OPTION_EXIT)){
+			System.exit(1);
+		}
+	}
+
+	public void chooseFromPurchaseMenu(String choice) {
+		// do purchase
+		if(choice.equals(PURCHASE_MENU_OPTION_FEED)) {
+			feedMoney();
+		} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT)) {
+			selectProduct();
+		} else if (choice.equals(PURCHASE_MENU_OPTION_FINISH)) {
+			finishTransaction();
+		}
+		currentMenu = PURCHASE_MENU_OPTIONS;
+	}
+
 	public double feedMoney(){
 		System.out.print("Enter an amount to deposit: ");
 
@@ -77,8 +90,6 @@ public class VendingMachineCLI {
 			balance += deposit;
 			NumberFormat currency = NumberFormat.getCurrencyInstance();
 			System.out.println("\nYou deposited: " + currency.format(deposit) + "\nBalance: " + currency.format(balance));
-
-			String choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 		} catch(NumberFormatException e) {
 			System.out.println("Please enter a valid price: ");
 		}
