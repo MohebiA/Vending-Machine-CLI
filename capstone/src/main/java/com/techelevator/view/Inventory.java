@@ -16,8 +16,6 @@ public class Inventory {
             while (readInventory.hasNextLine()) {
                 String[] currentLine = readInventory.nextLine().split("\\|");
 
-                System.out.println(Arrays.toString(currentLine));
-
                 String currentSlot = currentLine[0];
                 Item currentItem = new Item(currentSlot,
                         currentLine[1],

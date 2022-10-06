@@ -7,13 +7,14 @@ import com.techelevator.view.Menu;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class VendingMachineCLI {
 
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE };
-	private Map<String, List<Item>> currentStock = new HashMap<>();
+	private Map<String, List<Item>> currentStock = new TreeMap<>();
 
 	private Menu menu;
 
@@ -27,6 +28,21 @@ public class VendingMachineCLI {
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
+
+
+				for(Map.Entry<String, List<Item>> stock : currentStock.entrySet() ){
+
+					boolean soldOut = true;
+					if(stock.getValue().size() > 0){
+						soldOut = false;
+					}
+
+					System.out.println(stock.getKey() + " " + stock.getValue().get(0).getName() + ", Price: " + stock.getValue().get(0).getPrice() + ", Stock: "
+							+ ((soldOut? "Sold Out" : (stock.getValue().size()))));
+
+				}
+
+
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
 			}
