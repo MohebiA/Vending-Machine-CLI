@@ -8,7 +8,7 @@ public class Inventory {
 
     private Map<String, List<Item>> inventoryMap = new HashMap<>();
     private static File inventoryFile = new File("vendingmachine.csv");
-    private static final int DEFAULT_STOCK_COUNT = 5;
+    private static final int DEFAULT_STOCK_COUNT = 6;
 
     public static Map<String, List<Item>> loadInventory(Map destinationMap) {
 
