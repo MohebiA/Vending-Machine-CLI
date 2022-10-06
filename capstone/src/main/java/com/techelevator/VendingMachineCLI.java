@@ -20,6 +20,7 @@ public class VendingMachineCLI {
 
 	private Map<String, List<Item>> currentStock = new TreeMap<>();
 	private static double balance = 0;
+	private String[] currentMenu = MAIN_MENU_OPTIONS;
 
 	private Menu menu;
 
@@ -40,14 +41,7 @@ public class VendingMachineCLI {
 				 choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
 				 if(choice.equals(PURCHASE_MENU_OPTION_FEED)) {
-					 System.out.print("Enter an amount to deposit: ");
-
-					 try {
-						 double depositAmount = Double.parseDouble(menu.getUserInput());
-						 feedMoney(depositAmount);
-					 } catch(NumberFormatException e) {
-						 System.out.println("Please enter a valid price: ");
-					 }
+					 feedMoney();
 
 				 } else if (choice.equals(PURCHASE_MENU_OPTION_SELECT)) {
 					 selectProduct();
@@ -75,17 +69,36 @@ public class VendingMachineCLI {
 		currentStock = Inventory.loadInventory(currentStock);
 	}
 
-	public static double feedMoney(double deposit){
-		balance += deposit;
+	public double feedMoney(){
+		System.out.print("Enter an amount to deposit: ");
 
-		NumberFormat currency = NumberFormat.getCurrencyInstance();
-		System.out.println("\nYou deposited: " + currency.format(deposit) + "\nBalance: " + currency.format(balance));
+		try {
+			double deposit = Double.parseDouble(menu.getUserInput().strip());
+			balance += deposit;
+			NumberFormat currency = NumberFormat.getCurrencyInstance();
+			System.out.println("\nYou deposited: " + currency.format(deposit) + "\nBalance: " + currency.format(balance));
+
+			String choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+		} catch(NumberFormatException e) {
+			System.out.println("Please enter a valid price: ");
+		}
 
 		return balance;
 	}
 
-	public static void selectProduct() {
+	public void selectProduct() {
+		displayItems(currentStock);
+		System.out.print("\nPlease enter the item slot number: ");
 
+		try {
+			String userSlot = menu.getUserInput().strip();
+			// Check if it's valid
+			String currentItem = currentStock.get(userSlot).get(0).getName();
+			System.out.println("\nYou selected " + currentItem);
+		} catch(Exception e) {
+			System.out.println("Please enter a valid slot number.");
+			String choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+		}
 	}
 
 	public static void dispenseItem() {
