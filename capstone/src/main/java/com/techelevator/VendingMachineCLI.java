@@ -20,6 +20,7 @@ public class VendingMachineCLI {
 	private static final String PURCHASE_MENU_OPTION_FINISH = "Finish Transaction";
 	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED, PURCHASE_MENU_OPTION_SELECT, PURCHASE_MENU_OPTION_FINISH};
 	private Map<String, List<Item>> currentStock = new TreeMap<>();
+	private static double balance = 0;
 
 	private Menu menu;
 
@@ -34,24 +35,16 @@ public class VendingMachineCLI {
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
 
-
-				for(Map.Entry<String, List<Item>> stock : currentStock.entrySet() ){
-
-					boolean soldOut = true;
-					if(stock.getValue().size() > 0){
-						soldOut = false;
-					}
-
-					System.out.println(stock.getKey() + " " + stock.getValue().get(0).getName() + ", Price: " + stock.getValue().get(0).getPrice() + ", Stock: "
-							+ ((soldOut? "Sold Out" : (stock.getValue().size()))));
-
-				}
-
+				displayItems(currentStock);
 
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
 
 				 choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+
+				 if(choice.equals(PURCHASE_MENU_OPTION_FEED)){
+				 }
+
 
 			} else if(choice.equals(MAIN_MENU_OPTION_EXIT)){
 				System.exit(1);
@@ -72,5 +65,26 @@ public class VendingMachineCLI {
 	public void initializeInventory() {
 		currentStock = Inventory.loadInventory(currentStock);
 		// System.out.println(currentStock.get("A1").get(0).getName());
+	}
+
+	public static double feedMoney(double deposit){
+		balance = deposit + balance;
+
+		return balance;
+	}
+
+	public static void displayItems(Map<String, List<Item>> inventory){
+		for(Map.Entry<String, List<Item>> stock : inventory.entrySet() ){
+
+			boolean soldOut = true;
+			if(stock.getValue().size() > 0){
+				soldOut = false;
+			}
+
+			System.out.println(stock.getKey() + " " + stock.getValue().get(0).getName()
+					+ ", Price: " + stock.getValue().get(0).getPrice() + ", Stock: "
+					+ ((soldOut? "Sold Out" : (stock.getValue().size()))));
+
+		}
 	}
 }
