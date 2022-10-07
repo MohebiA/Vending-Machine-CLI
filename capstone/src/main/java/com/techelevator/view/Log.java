@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Log {
 
@@ -16,9 +18,6 @@ public class Log {
     private String logFilePath = "Log.txt";
     private File transactionLog = new File(logFilePath);
     private PrintWriter writer = null;
-
-    private String salesReportPath = "SalesReport.txt";
-    private File salesReportFile = new File(salesReportPath);
     private PrintWriter salesLogger = null;
 
     public void loggerMethod(String message){
@@ -36,6 +35,10 @@ public class Log {
     }
 
     public void salesReport(String message){
+        Date date = new Date();
+        Format formatter = new SimpleDateFormat("YYYY-dd-mm_hh-mm");
+        String dateTimeSales = ("Sales_" + formatter.format(date) + ".txt");
+        File salesReportFile = new File(dateTimeSales);
 
         try (PrintWriter salesWriter = new PrintWriter(new FileOutputStream (salesReportFile, true))) {
             salesLogger = salesWriter;
