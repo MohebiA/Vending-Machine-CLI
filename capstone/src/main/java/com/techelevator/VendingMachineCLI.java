@@ -2,6 +2,7 @@ package com.techelevator;
 
 import com.techelevator.view.Inventory;
 import com.techelevator.view.Item;
+import com.techelevator.view.Log;
 import com.techelevator.view.Menu;
 import jdk.swing.interop.SwingInterOpUtils;
 
@@ -18,6 +19,8 @@ public class VendingMachineCLI {
 	private static final String PURCHASE_MENU_OPTION_SELECT = "Select Product";
 	private static final String PURCHASE_MENU_OPTION_FINISH = "Finish Transaction";
 	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED, PURCHASE_MENU_OPTION_SELECT, PURCHASE_MENU_OPTION_FINISH};
+
+	private Log cashLogger = new Log();
 
 	private Map<String, List<Item>> currentStock = new TreeMap<>();
 	private static double balance = 0;
@@ -98,7 +101,7 @@ public class VendingMachineCLI {
 		try {
 			double deposit = Double.parseDouble(menu.getUserInput().strip());
 			balance += deposit;
-			//NumberFormat currency = NumberFormat.getCurrencyInstance();
+			cashLogger.loggerMethod("FEED MONEY: " + currency.format(deposit) + " " + currency.format(balance));
 			System.out.println("\nYou deposited: " + currency.format(deposit) + "\nBalance: " + currency.format(balance));
 		} catch(NumberFormatException e) {
 			System.out.println("Please enter a valid price: ");
@@ -134,6 +137,7 @@ public class VendingMachineCLI {
 			System.out.println("Insufficient funds XXX");
 		}else {
 			balance -= currentItem.getPrice();
+			cashLogger.loggerMethod(currentItem.getName() + " " + userSlot + " " + currency.format(currentItem.getPrice()) + " " + currency.format(balance));
 			System.out.println("Current balance: " + currency.format(balance) + " \n" + currentItem.getMessage());
 		}
 
@@ -145,7 +149,7 @@ public class VendingMachineCLI {
 		int nickelCount = 0;
 
 		System.out.println("Change due: " + currency.format(balance));
-
+		double startBalance = balance;
 		// Penny math:
 		int balancePennies = (int)(balance * 100);
 		quarterCount = (int)(balancePennies / 25);
@@ -159,6 +163,7 @@ public class VendingMachineCLI {
 		balance = balancePennies / 100;
 
 		System.out.println("Returning: " + quarterCount + " quarters, " + dimeCount + " dimes, " + nickelCount + " nickels.");
+		cashLogger.loggerMethod("GIVE CHANGE: " + currency.format(startBalance) + " " + currency.format(balance));
 		System.out.println("Updated balance: " + currency.format(balance));
 
 		System.out.println("\n------------------------");
@@ -180,4 +185,13 @@ public class VendingMachineCLI {
 
 		}
 	}
+
+	public void transactionLogger(String message){
+
+
+
+		cashLogger.loggerMethod(message);
+	}
+
+
 }
