@@ -24,7 +24,7 @@ public class VendingMachineCLI {
 	private Log cashLogger = new Log();
 
 	private Map<String, List<Item>> currentStock = new TreeMap<>();
-	private static double balance = 0;
+	private double balance = 0;
 	private NumberFormat currency = NumberFormat.getCurrencyInstance();
 	private String[] currentMenu = MAIN_MENU_OPTIONS;
 
@@ -40,11 +40,9 @@ public class VendingMachineCLI {
 			String choice = (String) menu.getChoiceFromOptions(currentMenu);
 
 			if (currentMenu.equals(MAIN_MENU_OPTIONS)) {
-				//String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 				chooseFromMain(choice);
 			}
 			else if (currentMenu.equals(PURCHASE_MENU_OPTIONS)) {
-				//String choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 				chooseFromPurchaseMenu(choice);
 			}
 		}
@@ -160,11 +158,11 @@ public class VendingMachineCLI {
 		double startBalance = balance;
 		// Penny math:
 		int balancePennies = (int)(balance * 100);
-		quarterCount = (int)(balancePennies / 25);
+		quarterCount = (balancePennies / 25);
 		balancePennies -= quarterCount * 25;
-		dimeCount = (int)(balancePennies / 10);
+		dimeCount = (balancePennies / 10);
 		balancePennies -= dimeCount * 10;
-		nickelCount = (int)(balancePennies / 5);
+		nickelCount = (balancePennies / 5);
 		balancePennies -= nickelCount * 5;
 
 		// Update balance in dollars too
