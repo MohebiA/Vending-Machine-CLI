@@ -22,6 +22,7 @@ public class VendingMachineCLI {
 	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED, PURCHASE_MENU_OPTION_SELECT, PURCHASE_MENU_OPTION_FINISH};
 
 	private Log cashLogger = new Log();
+	private Log salesLogger = new Log();
 
 	private Map<String, List<Item>> currentStock = new TreeMap<>();
 	private double balance = 0;
@@ -149,7 +150,7 @@ public class VendingMachineCLI {
 
 	}
 
-	public void finishTransaction() {
+	public double finishTransaction() {
 		int quarterCount = 0;
 		int dimeCount = 0;
 		int nickelCount = 0;
@@ -172,9 +173,13 @@ public class VendingMachineCLI {
 		cashLogger.loggerMethod("GIVE CHANGE: " + currency.format(startBalance) + " " + currency.format(balance));
 		System.out.println("Updated balance: " + currency.format(balance));
 
+		generateSalesReport(currentStock);
+
 		System.out.println("\n------------------------");
 		System.out.println("Returning to Main Menu:");
 		System.out.println("------------------------");
+
+		return balance;
 	}
 
 	public void displayItems(Map<String, List<Item>> inventory){
@@ -190,6 +195,26 @@ public class VendingMachineCLI {
 					+ ((soldOut? "SOLD OUT" : (stock.getValue().size() - 1))));
 
 		}
+	}
+
+	public void generateSalesReport(Map<String, List<Item>> inventory){
+
+		double totalCost = 0;
+
+		for(Map.Entry<String, List<Item>> stock : inventory.entrySet()) {
+
+			String currentItemName = stock.getValue().get(0).getName();
+			int currentItemStock = stock.getValue().size();
+			int currentItemSold = 6 - currentItemStock;
+
+			String salesMessage = currentItemName + "|" + currentItemSold;
+			salesLogger.salesReport(salesMessage);
+
+			totalCost += currentItemSold * stock.getValue().get(0).getPrice();
+		}
+
+		salesLogger.salesReport(" \n");
+		salesLogger.salesReport("**TOTAL SALES** " + currency.format(totalCost));
 	}
 
 	public void transactionLogger(String message){

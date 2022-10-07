@@ -17,6 +17,10 @@ public class Log {
     private File transactionLog = new File(logFilePath);
     private PrintWriter writer = null;
 
+    private String salesReportPath = "SalesReport.txt";
+    private File salesReportFile = new File(salesReportPath);
+    private PrintWriter salesLogger = null;
+
     public void loggerMethod(String message){
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd/MM/YY");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss a");
@@ -28,6 +32,17 @@ public class Log {
 
         } catch (FileNotFoundException e){
             System.out.println("Log not found");
+        }
+    }
+
+    public void salesReport(String message){
+
+        try (PrintWriter salesWriter = new PrintWriter(new FileOutputStream (salesReportFile, true))) {
+            salesLogger = salesWriter;
+            salesLogger.append(message + "\n");
+
+        } catch (FileNotFoundException e){
+            System.out.println("Sales Report not found");
         }
     }
 
