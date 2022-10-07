@@ -15,6 +15,8 @@ public class Item {
         this.category = category;
     }
 
+    public String getSlot(){ return slot;}
+
     public String getName() {
         return name;
     }
