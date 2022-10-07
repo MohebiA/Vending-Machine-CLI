@@ -21,6 +21,7 @@ public class VendingMachineCLI {
 
 	private Map<String, List<Item>> currentStock = new TreeMap<>();
 	private static double balance = 0;
+	NumberFormat currency = NumberFormat.getCurrencyInstance();
 	private String[] currentMenu = MAIN_MENU_OPTIONS;
 
 	private Menu menu;
@@ -97,7 +98,7 @@ public class VendingMachineCLI {
 		try {
 			double deposit = Double.parseDouble(menu.getUserInput().strip());
 			balance += deposit;
-			NumberFormat currency = NumberFormat.getCurrencyInstance();
+			//NumberFormat currency = NumberFormat.getCurrencyInstance();
 			System.out.println("\nYou deposited: " + currency.format(deposit) + "\nBalance: " + currency.format(balance));
 		} catch(NumberFormatException e) {
 			System.out.println("Please enter a valid price: ");
@@ -118,7 +119,7 @@ public class VendingMachineCLI {
 			if(currentItemList.size() > 1){
 				dispenseItem(userSlot);
 			}else{
-				System.out.println(userSlot + " is empty");
+				System.out.println(userSlot + " is SOLD OUT");
 			}
 		} catch(Exception e) {
 			System.out.println("Please enter a valid slot number.");
@@ -128,12 +129,12 @@ public class VendingMachineCLI {
 
 	public void dispenseItem(String userSlot) {
 		Item currentItem = currentStock.get(userSlot).remove(0);
-		System.out.println("You selected " + currentItem.getName() + ", " + currentItem.getPrice());
+		System.out.println("You selected " + currentItem.getName() + ", " + currency.format(currentItem.getPrice()));
 		if(currentItem.getPrice() > balance){
 			System.out.println("Insufficient funds XXX");
 		}else {
 			balance -= currentItem.getPrice();
-			System.out.println("Current balance: " + balance + " \n" + currentItem.getMessage());
+			System.out.println("Current balance: " + currency.format(balance) + " \n" + currentItem.getMessage());
 		}
 
 	}
@@ -143,7 +144,7 @@ public class VendingMachineCLI {
 		int dimeCount = 0;
 		int nickelCount = 0;
 
-		System.out.println("Change due: " + balance);
+		System.out.println("Change due: " + currency.format(balance));
 
 		// Penny math:
 		int balancePennies = (int)(balance * 100);
@@ -158,10 +159,14 @@ public class VendingMachineCLI {
 		balance = balancePennies / 100;
 
 		System.out.println("Returning: " + quarterCount + " quarters, " + dimeCount + " dimes, " + nickelCount + " nickels.");
-		System.out.println("Updated balance: " + balance);
+		System.out.println("Updated balance: " + currency.format(balance));
+
+		System.out.println("\n------------------------");
+		System.out.println("Returning to Main Menu:");
+		System.out.println("------------------------");
 	}
 
-	public static void displayItems(Map<String, List<Item>> inventory){
+	public void displayItems(Map<String, List<Item>> inventory){
 		for(Map.Entry<String, List<Item>> stock : inventory.entrySet() ){
 
 			boolean soldOut = true;
@@ -170,8 +175,8 @@ public class VendingMachineCLI {
 			}
 
 			System.out.println(stock.getKey() + " " + stock.getValue().get(0).getName()
-					+ ", Price: " + stock.getValue().get(0).getPrice() + ", Stock: "
-					+ ((soldOut? "Sold Out" : (stock.getValue().size() - 1))));
+					+ ", Price: " + currency.format(stock.getValue().get(0).getPrice()) + ", Stock: "
+					+ ((soldOut? "SOLD OUT" : (stock.getValue().size() - 1))));
 
 		}
 	}
