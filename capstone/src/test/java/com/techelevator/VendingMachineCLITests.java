@@ -26,12 +26,77 @@ public class VendingMachineCLITests {
     }
 
     @Test
-    public void checkFinishTransaction() {
-        testBalance = 4.35;
+    public void checkFinishTransaction_7_65() {
+
         double expected = 0.00;
-        double actual = cli.finishTransaction();
+        double actual = pennyMath(7.65);
 
         Assert.assertEquals(expected, actual, 0.00);
+
+
+    }
+
+
+    @Test
+    public void coin_count_test_40(){
+        int[] expected = new int[]{1,1,1,0};
+        double testBalance = .40;
+        int[] actual = coinCount(testBalance);
+
+        Assert.assertArrayEquals(expected,actual);
+    }
+
+    @Test
+    public void coin_count_test_265(){
+        int[] expected = new int[]{10,1,1,0};
+        double testBalance = 2.65;
+        int[] actual = coinCount(testBalance);
+
+        Assert.assertArrayEquals(expected,actual);
+    }
+
+    public double pennyMath(double balanceAmount){
+
+        int quarterCount = 0;
+        int dimeCount = 0;
+        int nickelCount = 0;
+        // Penny math:
+        int balancePennies = (int)(balanceAmount * 100);
+        quarterCount = (balancePennies / 25);
+        balancePennies -= quarterCount * 25;
+        dimeCount = (balancePennies / 10);
+        balancePennies -= dimeCount * 10;
+        nickelCount = (balancePennies / 5);
+        balancePennies -= nickelCount * 5;
+
+        // Update balance in dollars too
+        balanceAmount = balancePennies / 100;
+
+        return balanceAmount;
+    }
+
+    public int[] coinCount(double balanceAmount){
+        int[] coinArray = new int[4];
+
+        int quarterCount = 0;
+        int dimeCount = 0;
+        int nickelCount = 0;
+        // Penny math:
+        int balancePennies = (int)(balanceAmount * 100);
+        quarterCount = (balancePennies / 25);
+        balancePennies -= quarterCount * 25;
+        dimeCount = (balancePennies / 10);
+        balancePennies -= dimeCount * 10;
+        nickelCount = (balancePennies / 5);
+        balancePennies -= nickelCount * 5;
+
+        coinArray[0] = quarterCount;
+        coinArray[1] = dimeCount;
+        coinArray[2] = nickelCount;
+        coinArray[3] = balancePennies;
+
+        return coinArray;
+
     }
 
 }
