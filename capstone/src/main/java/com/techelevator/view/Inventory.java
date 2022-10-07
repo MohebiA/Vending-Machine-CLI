@@ -8,7 +8,7 @@ public class Inventory {
 
     private Map<String, List<Item>> inventoryMap = new HashMap<>();
     private static File inventoryFile = new File("vendingmachine.csv");
-    private static final int DEFAULT_STOCK_COUNT = 6;
+    private static final int DEFAULT_STOCK_COUNT = 5;
 
     public static Map<String, List<Item>> loadInventory(Map destinationMap) {
 
@@ -23,7 +23,7 @@ public class Inventory {
                         currentLine[3]);
 
                 List<Item> currentItemStock = new ArrayList<>();
-                for (int i=0; i < DEFAULT_STOCK_COUNT; i++) {
+                for (int i=0; i < DEFAULT_STOCK_COUNT + 1; i++) {
                     currentItemStock.add(currentItem);
                 }
                 destinationMap.put(currentSlot, currentItemStock);

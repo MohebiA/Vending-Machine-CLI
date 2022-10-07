@@ -6,6 +6,7 @@ import com.techelevator.view.Log;
 import com.techelevator.view.Menu;
 import jdk.swing.interop.SwingInterOpUtils;
 
+import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -24,7 +25,7 @@ public class VendingMachineCLI {
 
 	private Map<String, List<Item>> currentStock = new TreeMap<>();
 	private static double balance = 0;
-	NumberFormat currency = NumberFormat.getCurrencyInstance();
+	private NumberFormat currency = NumberFormat.getCurrencyInstance();
 	private String[] currentMenu = MAIN_MENU_OPTIONS;
 
 	private Menu menu;
@@ -54,6 +55,13 @@ public class VendingMachineCLI {
 		VendingMachineCLI cli = new VendingMachineCLI(menu);
 
 		cli.initializeInventory();
+
+		// Clear log file when app first runs
+		try (PrintWriter clearWriter = new PrintWriter("Log.txt")) {
+			clearWriter.close();
+		} catch (Exception e) {
+			System.out.println("Could not access or clear file.");
+		}
 
 		cli.run();
 
@@ -187,9 +195,6 @@ public class VendingMachineCLI {
 	}
 
 	public void transactionLogger(String message){
-
-
-
 		cashLogger.loggerMethod(message);
 	}
 
