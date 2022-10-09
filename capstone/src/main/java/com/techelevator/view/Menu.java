@@ -51,8 +51,4 @@ public class Menu {
 		out.flush();
 	}
 
-	// Added method to access user input in CLI
-	public String getUserInput() {
-		return in.nextLine();
-	}
 }

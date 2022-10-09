@@ -57,16 +57,13 @@ public class VendingMachineCLITests {
 
     public double pennyMath(double balanceAmount){
 
-        int quarterCount = 0;
-        int dimeCount = 0;
-        int nickelCount = 0;
         // Penny math:
         int balancePennies = (int)(balanceAmount * 100);
-        quarterCount = (balancePennies / 25);
+        int quarterCount = (balancePennies / 25);
         balancePennies -= quarterCount * 25;
-        dimeCount = (balancePennies / 10);
+        int dimeCount = (balancePennies / 10);
         balancePennies -= dimeCount * 10;
-        nickelCount = (balancePennies / 5);
+        int nickelCount = (balancePennies / 5);
         balancePennies -= nickelCount * 5;
 
         // Update balance in dollars too
@@ -78,16 +75,13 @@ public class VendingMachineCLITests {
     public int[] coinCount(double balanceAmount){
         int[] coinArray = new int[4];
 
-        int quarterCount = 0;
-        int dimeCount = 0;
-        int nickelCount = 0;
         // Penny math:
         int balancePennies = (int)(balanceAmount * 100);
-        quarterCount = (balancePennies / 25);
+        int quarterCount = (balancePennies / 25);
         balancePennies -= quarterCount * 25;
-        dimeCount = (balancePennies / 10);
+        int dimeCount = (balancePennies / 10);
         balancePennies -= dimeCount * 10;
-        nickelCount = (balancePennies / 5);
+        int nickelCount = (balancePennies / 5);
         balancePennies -= nickelCount * 5;
 
         coinArray[0] = quarterCount;

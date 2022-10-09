@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 public class ItemTests {
 
-
-
     Item item = new Item("A1","Doritos",1.15, "Chip");
 
     @Test
